@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LinkSqueezer Countdown</title>
+  <style>
+    .center{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+    .center2{
+        width: 500px; /* increased form width */
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    /* some basic styling for the page */
+    #countdown {
+      font-size: 72px;
+      font-weight: bold;
+      margin: 20px;
+      color: #333;
+      
+    }
+    #form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .g-recaptcha {
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+<div class="center">
+    <div class="center2">
+
+    
+        <!-- the countdown timer will be displayed in this element -->
+        <div id="countdown">10</div>
+
+        <!-- include the reCAPTCHA API -->
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+
+        <!-- the form that the user needs to submit -->
+        <form id="form">
+            <!-- the reCAPTCHA widget will be inserted here -->
+            <div class="g-recaptcha" data-sitekey="your_site_key" data-callback="onSubmit"></div>
+        </form>
+    </div>
+</div>
+  <script>
+    // get a reference to the form and countdown elements
+    const form = document.getElementById('form');
+    const countdown = document.getElementById('countdown');
+
+    // the number of seconds for the countdown
+    let seconds = 10;
+
+    // a function to update the countdown timer
+    function updateCountdown() {
+      countdown.innerHTML = seconds;
+      seconds--;
+      if (seconds >= 0) {
+        setTimeout(updateCountdown, 1000);
+      } else {
+        // the countdown is complete, redirect to the new URL
+        window.location.href = '{{link.link}}';
+      }
+    }
+
+    // a function to start the countdown
+    function startCountdown() {
+      // start the countdown
+      updateCountdown();
+    }
+
+    // a callback function that will be called when the user successfully completes the reCAPTCHA check
+    function onSubmit() {
+      startCountdown();
+    }
+
+    // listen for the 'grecaptcha.ready' event
+    grecaptcha.ready(function() {
+      // trigger the reCAPTCHA check
+      grecaptcha.execute();
+    });
+  </script>
+</body>
+</html>

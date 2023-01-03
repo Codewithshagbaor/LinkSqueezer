@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LinkSqueezer</title>
+    <style>
+        /* Add some styling to center the elements on the page */
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        /* Add some styling to the form */
+        form {
+            width: 500px; /* increased form width */
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            /* added input animation */
+            transition: box-shadow 0.3s, border 0.3s;
+        }
+        input[type="text"]:focus {
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border: 1px solid #555;
+        }
+        button[type="submit"] {
+            width: 100%;
+            background-color: #4caf50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* added output styling */
+        .output {
+        margin: 5px 0; /* add some margin */
+        padding: 20px; /* add some padding */
+        border: 1px solid #ccc; /* add a border */
+        border-radius: 5px; /* round the corners of the border */
+        text-align: left; /* align the text to the left */
+        box-shadow: 0 0 10px rgba(0,0,0,0.1); /* add a subtle drop shadow */
+        background: #eee; /* add a light grey background color */
+        }
+    </style>
+</head>
+<body>
+    <div class="center">
+        <!-- The form goes here -->
+        <form method="POST" id="post-form">
+            {% csrf_token %}
+            <!-- The h1 and p elements go here -->
+            <h1>LinkSqueezer</h1>
+            <p>Enter a long URL to be shortened:</p>
+            <input type="text" id="link" placeholder="Long URL"  required />
+            <button type="submit">Shorten</button>
+            <div  id="result">
+              <!-- Your content goes here -->
+          </div>
+        </form>
+    </div>
+    <script src="/static/js/jquery-2.2.4.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>	
+    <script>
+        $(document).on('submit', '#post-form',function(e){
+            e.preventDefault();
+            $.ajax({
+                type:'POST',
+                url:'{% url "index" %}',
+                data:{
+                    link:$('#link').val(),
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    action: 'post'
+                },
+                success:function(json){
+                    document.getElementById("post-form").reset();
+                    $("#result").prepend('<div class="output">'+
+                        '<p class="mb-auto">'+'Shorten: ' +'http://127.0.0.1:8000/'+ json.uid + '</p>' 
+                    )
+                },
+                error : function(xhr,errmsg,err) {
+                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                    " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+            });
+        });
+    </script>
+</body>
+</html>
