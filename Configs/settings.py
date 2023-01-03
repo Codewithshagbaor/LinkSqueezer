@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-j4j(-$4ug#=5mi4s)1h1a&==$9#!w4$h2dw@*o5#@-%(2a-13n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-CSRF_TRUSTED_ORIGINS = ['https://web-production-43d1.up.railway.app/']
+CSRF_TRUSTED_ORIGINS = ['https://web-production-43d1.up.railway.app']
 
 def _origin_verified(self, request):
     request_origin = request.META["HTTP_ORIGIN"]
