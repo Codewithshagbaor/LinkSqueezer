@@ -38,7 +38,7 @@ def _origin_verified(self, request):
         good_origin = "%s://%s" % (
             "https" if request.is_secure() else "http",
             good_host,)
-            if request_origin == good_origin:
+        if request_origin == good_origin:
                 return True
 
 ALLOWED_HOSTS = ["*"]
