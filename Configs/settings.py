@@ -28,7 +28,7 @@ DEBUG = True
 
 CSRF_TRUSTED_ORIGINS = ['https://web-production-43d1.up.railway.app']
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [".vercel.app"]
 
 
 # Application definition
